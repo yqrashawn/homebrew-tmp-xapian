@@ -1,0 +1,35 @@
+diff --git a/common/closefrom.cc b/common/closefrom.cc
+index ec566bee44c3..8fb430e6f04c 100644
+--- a/common/closefrom.cc
++++ b/common/closefrom.cc
+@@ -146,8 +146,7 @@ Xapian::Internal::closefrom(int fd)
+ 			continue;
+ 		}
+ 
+-		// Retry on EINTR.
+-		while (close(n) < 0 && errno == EINTR) { }
++		close(n);
+ 	    }
+ 	}
+ 	close(dir);
+@@ -202,8 +201,7 @@ Xapian::Internal::closefrom(int fd)
+ 		    continue;
+ 		}
+ 
+-		// Retry on EINTR.
+-		while (close(n) < 0 && errno == EINTR) { }
++		close(n);
+ 	    }
+ 	    if (r == 1) {
+ 		// We've had the last entry.
+@@ -224,9 +222,7 @@ Xapian::Internal::closefrom(int fd)
+     if (maxfd < 0)
+ 	maxfd = get_maxfd();
+     while (fd <= maxfd) {
+-	// Retry on EINTR; just ignore other errors (we'll get EBADF if fd
+-	// isn't open so that's OK).
+-	while (close(fd) < 0 && errno == EINTR) { }
++	close(fd);
+ 	++fd;
+     }
+ }
